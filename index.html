@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Sekolah - SMK Negeri 4 Manado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e88e5;
+            --secondary-color: #e3f2fd;
+            --text-color: #333;
+            --danger-color: #e53935;
+            --success-color: #43a047;
+            --white: #ffffff;
+            --shadow: 0 10px 25px rgba(15, 35, 95, 0.18);
+            --radius: 14px;
+            --accent-color: #ff6f61;
+            --accent-color-soft: #ffcc80;
+            --bg-gradient-start: #e3f2fd;
+            --bg-gradient-end: #fce4ec;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+            padding: 0.8rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            height: 70px;
+            color: var(--white);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand img {
+            height: 40px;
+            width: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.8);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+
+        .brand-text h1 {
+            font-size: 1.25rem;
+            color: var(--white);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: 0.05em;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .student-info {
+            display: none;
+            font-weight: 600;
+            color: var(--primary-color);
+            background: var(--white);
+            padding: 6px 15px;
+            border-radius: 999px;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* --- Main Content --- */
+        main {
+            flex: 1;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 1800px; /* Lebar maksimal sangat lebar agar form benar-benar besar */
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        section {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Login Section --- */
+        .card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 420px;
+            margin: 5vh auto;
+            text-align: center;
+            border-top: 5px solid var(--primary-color);
+        }
+
+        .card h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.25);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 999px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 8px 18px rgba(30, 136, 229, 0.45);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(30, 136, 229, 0.55);
+            opacity: 0.96;
+        }
+
+        /* --- Waiting Room --- */
+        .waiting-container {
+            text-align: center;
+            margin-top: 10vh;
+            color: #0d47a1;
+        }
+
+        .timer-box {
+            background: linear-gradient(135deg, rgba(30,136,229,0.06), rgba(255,111,97,0.08));
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: inline-block;
+            margin-top: 2rem;
+            min-width: 300px;
+            border: 1px solid rgba(30,136,229,0.15);
+        }
+
+        .countdown {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-variant-numeric: tabular-nums;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        /* --- DESKTOP EXAM LAYOUT (FIXED) --- */
+        /* HTML Order: Sidebar -> Iframe */
+        /* CSS Grid: Sidebar (Fixed Kecil) -> Iframe (Flex Besar) */
+        .exam-layout {
+            display: grid;
+            /* Kolom 1: Sidebar 280px | Kolom 2: Google Form Sisa Ruangan (1fr) */
+            grid-template-columns: 280px 1fr; 
+            gap: 25px;
+            height: 85vh;
+            width: 100%;
+        }
+
+        .iframe-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            min-width: 0; 
+            border: 2px solid rgba(30,136,229,0.15);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* Sidebar Info (Desktop) */
+        .exam-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            /* Sidebar tidak bisa mengecil dibawah 280px */
+            min-width: 280px; 
+        }
+
+        .timer-card {
+            background: linear-gradient(135deg, rgba(30,136,229,0.05), rgba(255,204,128,0.15));
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid rgba(30,136,229,0.18);
+        }
+
+        .timer-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .exam-timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+
+        .exam-timer.warning {
+            color: var(--danger-color);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .violation-badge {
+            background: rgba(255, 224, 130, 0.9);
+            color: #8d6e00;
+            padding: 5px 10px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .rules-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            font-size: 0.85rem;
+            color: #555;
+            flex-grow: 1;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .rules-card ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .rules-card li {
+            margin-bottom: 8px;
+        }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            visibility: hidden;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .modal-overlay.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            max-width: 90%;
+            width: 380px;
+            text-align: center;
+            border-top: 6px solid var(--danger-color);
+            box-shadow: var(--shadow);
+        }
+
+        .finish-screen {
+            text-align: center;
+            display: none;
+        }
+        
+        .finish-icon {
+            font-size: 5rem;
+            color: var(--success-color);
+            margin-bottom: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.8rem;
+            background: linear-gradient(120deg, var(--primary-color), var(--accent-color));
+            border-top: none;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.2);
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* --- RESPONSIVE MOBILE (HP) --- */
+        /* Tampilan HP DIPERTAHANKAN */
+        @media (max-width: 768px) {
+            main {
+                padding: 0.5rem;
+                padding-top: 1rem;
+                align-items: flex-start;
+            }
+
+            /* Di HP, ubah dari Grid menjadi Flex Box */
+            .exam-layout {
+                display: flex;
+                flex-direction: column; /* Stack vertikal */
+                height: auto;
+            }
+
+            /* ORDER: Sidebar (Timer) Atas -> Iframe Bawah */
+            .exam-sidebar {
+                order: 1; /* Muncul pertama */
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .iframe-container {
+                order: 2; /* Muncul kedua */
+                height: 78vh;
+            }
+
+            /* Timer Sticky di HP */
+            .timer-card {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                border-radius: 0 0 12px 12px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                padding: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                text-align: left;
+                margin-bottom: 10px;
+            }
+
+            .timer-card h3 {
+                display: none;
+            }
+
+            .exam-timer {
+                font-size: 1.8rem;
+                color: var(--danger-color);
+            }
+
+            /* Hide Rules di HP */
+            .rules-card {
+                display: none;
+            }
+            
+            .violation-badge {
+                display: none;
+            }
+            
+            .btn {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+            
+            .card {
+                width: 100%;
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <img src="image/logokecil.png?raw=true" alt="Logo SMK N 4 Manado">
+            <div class="brand-text">
+                <h1>UJIAN SEKOLAH</h1>
+                <p>SMK Negeri 4 Manado</p>
+            </div>
+        </div>
+        <div id="studentInfoDisplay" class="student-info">
+            Siswa: -
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        
+        <!-- SECTION 1: LOGIN -->
+        <section id="section-login" class="active">
+            <div class="card">
+                <h2>UJIAN SEKOLAH</h2>
+                <p style="margin-bottom: 15px; color: #666; font-size: 0.9rem;">Silakan login untuk memulai.</p>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="studentName">Nama Lengkap</label>
+                        <input type="text" id="studentName" class="form-control" placeholder="Nama Siswa" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentClass">Kelas</label>
+                        <select id="studentClass" class="form-control" required>
+                            <option value="">Pilih Kelas</option>
+                            <option value="XII TJKT">XII TJKT</option>
+                            <option value="XII PS">XII PS</option>
+                            <option value="XII MPLB">XII MPLB</option>
+                            <option value="XII LK">XII LK</option>
+                            <option value="XII BP">XII BP</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn">Masuk</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- SECTION 2: WAITING ROOM -->
+        <section id="section-waiting">
+            <div class="waiting-container">
+                <div style="color: var(--primary-color); font-weight: bold; margin-bottom: 10px;">JADWAL UJIAN</div>
+                <h2>Ujian Dimulai Dalam:</h2>
+                <div class="timer-box">
+                    <div class="countdown" id="startCountdown">00:10</div>
+                    <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">Jangan refresh halaman ini.</p>
+                </div>
+                <div style="margin-top: 25px;">
+                    <button id="forceStartBtn" class="btn" style="max-width: 200px; background-color: var(--success-color);">Mulai Sekarang</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: EXAM INTERFACE -->
+        <section id="section-exam">
+            <div class="exam-layout">
+                
+                <!-- Sidebar (Info & Timer) -->
+                <div class="exam-sidebar">
+                    <div class="timer-card">
+                        <h3>Sisa Waktu</h3>
+                        <div class="exam-timer" id="examTimer">01:00:00</div>
+                        <div id="lastMinuteWarning" style="margin-top:8px; font-size:0.85rem; color:var(--danger-color); display:none;">
+                            Sisa waktu kurang dari 1 menit. Segera selesaikan dan tekan tombol "Kirim" di Google Form.
+                        </div>
+                    </div>
+                    
+                    <div class="rules-card">
+                        <h4 style="color: var(--danger-color); margin-bottom: 10px;">PERINGATAN KERAS!</h4>
+                        <p>Dilarang berpindah tab/aplikasi.</p>
+                        <div class="violation-badge">
+                            Pelanggaran: <span id="violationCount">0</span> / 5
+                        </div>
+                        <p style="margin-top:10px; font-size: 0.8rem; color: #dc3545;">
+                            Jika mencapai 5 kali, ujian otomatis selesai.
+                        </p>
+                        <ul style="margin-top: 15px; font-size: 0.85rem;">
+                            <li>Waktu berjalan otomatis.</li>
+                            <li>Koneksi internet harus stabil.</li>
+                            <li>Klik tombol "Kirim" pada Google Form jika sudah selesai.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Iframe Container (Google Form) -->
+                <div class="iframe-container" id="iframeContainer">
+                    <!-- Ganti URL Google Form di sini -->
+                    <iframe 
+                        id="googleFormFrame"
+                        src="https://docs.google.com/forms/d/e/1FAIpQLScb0etj2rfdAJYoSNfpIbqBvOB9k9xz-iUPyKnEAnpDKa8p9w/viewform?usp=header=true" 
+                        loading="lazy">
+                    </iframe>
+                    
+                    <!-- Overlay Waktu Habis -->
+                    <div id="timeUpOverlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:80%; background:rgba(255,255,255,0.98); z-index:10; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+                        <h2 style="color:var(--danger-color); font-size:2.5rem; margin-bottom:10px;">WAKTU HABIS!</h2>
+                        <p>Jangan Menekan Tombol "TUTUP UJIAN" Jika Belum Tekan Tombol "Kirim" Di Paling Akhir Bagian Bawah Jawaban Anda.Hub Panitia.</p>
+                        <button onclick="finishExam(true)" class="btn" style="margin-top:20px; width: auto; padding: 10px 30px;">Tutup Ujian</button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: FINISHED -->
+        <section id="section-finish" class="finish-screen">
+            <div class="card">
+                <div class="finish-icon">!!!!!</div>
+                <h2>Ujian Berakhir</h2>
+                <p>Waktu ujian Anda telah habis atau terdeteksi pelanggaran berat.</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #666;">Terima kasih.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Warning -->
+    <div id="warningModal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="font-size: 3rem; margin-bottom: 10px;">!!!!!</div>
+            <h3 style="color: var(--danger-color);">PERINGATAN!</h3>
+            <p style="margin: 10px 0;">Anda terdeteksi berpindah tab atau aplikasi.</p>
+            <p style="font-weight: bold; color: var(--danger-color);">
+                Sisa kesempatan: <span id="modalRemainingChance">4</span> kali lagi.
+            </p>
+            <p style="font-size: 0.8rem; margin-top: 5px;">Pada pelanggaran ke-5, ujian otomatis tertutup.</p>
+            <button class="btn" onclick="closeWarningModal()">Kembali Kerjakan</button>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 SMK Negeri 4 Manado. Tim IT Sekolah.
+    </footer>
+
+    <script>
+        // --- KONFIGURASI ---
+        const WAIT_TIME_SECONDS = 10; 
+        const EXAM_DURATION_MINUTES = 60; 
+        const MAX_VIOLATIONS = 3; 
+
+        // --- VARIABLE ---
+        let studentName = "";
+        let studentClass = "";
+        let startTimerInterval;
+        let examTimerInterval;
+        let warningCount = 0;
+
+        // --- DOM ELEMENTS ---
+        const sectionLogin = document.getElementById('section-login');
+        const sectionWaiting = document.getElementById('section-waiting');
+        const sectionExam = document.getElementById('section-exam');
+        const sectionFinish = document.getElementById('section-finish');
+        const studentInfoDisplay = document.getElementById('studentInfoDisplay');
+        const violationCountDisplay = document.getElementById('violationCount');
+        const lastMinuteWarning = document.getElementById('lastMinuteWarning');
+        
+        // --- 1. LOGIN ---
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            studentName = document.getElementById('studentName').value;
+            studentClass = document.getElementById('studentClass').value;
+
+            studentInfoDisplay.textContent = `${studentName} (${studentClass})`;
+            studentInfoDisplay.style.display = 'block';
+
+            switchSection(sectionLogin, sectionWaiting);
+            initStartCountdown();
+        });
+
+        // --- 2. COUNTDOWN TUNGGU ---
+        function initStartCountdown() {
+            let timeLeft = WAIT_TIME_SECONDS;
+            const display = document.getElementById('startCountdown');
+
+            function updateTimer() {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                display.textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(startTimerInterval);
+                    startExam();
+                } else {
+                    timeLeft--;
+                }
+            }
+
+            updateTimer();
+            startTimerInterval = setInterval(updateTimer, 1000);
+
+            document.getElementById('forceStartBtn').addEventListener('click', () => {
+                clearInterval(startTimerInterval);
+                startExam();
+            });
+        }
+
+        // --- 3. MULAI UJIAN ---
+        function startExam() {
+            switchSection(sectionWaiting, sectionExam);
+            initExamTimer();
+            activateTabSecurity(); 
+        }
+
+        // --- 4. TIMER UJIAN ---
+        function initExamTimer() {
+            let duration = EXAM_DURATION_MINUTES * 60;
+            const display = document.getElementById('examTimer');
+            const overlay = document.getElementById('timeUpOverlay');
+
+            examTimerInterval = setInterval(() => {
+                let hours = Math.floor(duration / 3600);
+                let minutes = Math.floor((duration % 3600) / 60);
+                let seconds = duration % 60;
+
+                display.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (duration < 300) display.classList.add('warning');
+                if (duration <= 60 && duration >= 0 && lastMinuteWarning) {
+                    lastMinuteWarning.style.display = 'block';
+                }
+
+                if (duration <= 0) {
+                    clearInterval(examTimerInterval);
+                    overlay.style.display = 'flex';
+                }
+
+                duration--;
+            }, 1000);
+        }
+
+        // --- 5. LOGIKA PINDAH TAB ---
+        function activateTabSecurity() {
+            document.addEventListener("visibilitychange", function() {
+                if (document.hidden) {
+                    warningCount++;
+                    updateViolationUI();
+
+                    if (warningCount >= MAX_VIOLATIONS) {
+                        finishExam(true); 
+                    } else {
+                        document.getElementById('modalRemainingChance').textContent = MAX_VIOLATIONS - warningCount;
+                        document.getElementById('warningModal').classList.add('show');
+                    }
+                }
+            });
+        }
+
+        function updateViolationUI() {
+            violationCountDisplay.textContent = warningCount;
+            if (warningCount >= 4) {
+                violationCountDisplay.parentElement.style.backgroundColor = "#dc3545";
+                violationCountDisplay.parentElement.style.color = "white";
+            }
+        }
+
+        function closeWarningModal() {
+            document.getElementById('warningModal').classList.remove('show');
+        }
+
+        // --- 6. SELESAI UJIAN ---
+        function finishExam(force = false) {
+            if (force) {
+                finalizeExam();
+            } else {
+                if(confirm("Apakah Anda yakin sudah selesai dan ingin mengumpulkan jawaban?")) {
+                    finalizeExam();
+                }
+            }
+        }
+
+        function finalizeExam() {
+            clearInterval(examTimerInterval);
+            switchSection(sectionExam, sectionFinish);
+            document.querySelector('header').style.display = 'none';
+            document.querySelector('footer').style.display = 'none';
+            window.scrollTo(0,0);
+        }
+
+        function switchSection(from, to) {
+            from.classList.remove('active');
+            setTimeout(() => {
+                to.classList.add('active');
+            }, 50);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
